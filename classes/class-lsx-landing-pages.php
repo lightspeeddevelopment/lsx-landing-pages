@@ -9,7 +9,7 @@
  * @copyright 2018 LightSpeed
  */
 
-class LSX_Landing_pages {
+class LSX_Landing_Pages {
 
 	public $options;
 
@@ -29,4 +29,4 @@ class LSX_Landing_pages {
 }
 
 global $lsx_landing_pages;
-$lsx_landing_pages = new LSX_Landing_pages();
+$lsx_landing_pages = new LSX_Landing_Pages();

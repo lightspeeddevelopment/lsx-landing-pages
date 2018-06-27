@@ -78,7 +78,7 @@ class LSX_Landing_Pages_Admin {
 			'label'                 => __( 'Landing Page', 'text_domain' ),
 			'description'           => __( 'Landing Page Definition', 'text_domain' ),
 			'labels'                => $labels,
-			'supports'              => array( 'title', ),
+			'supports'              => array( 'title' ),
 			'hierarchical'          => false,
 			'public'                => true,
 			'show_ui'               => true,
@@ -106,22 +106,21 @@ class LSX_Landing_Pages_Admin {
 		if ( is_admin() ) {
 			if ( ! class_exists( '\lsx\ui\uix' ) && ! function_exists( 'tour_operator' ) ) {
 				include_once LSXLDPG_PATH . 'uix/uix.php';
-			 	$pages = $this->settings_page_array();
-			 	$uix = \lsx\ui\uix::get_instance( 'lsx' );
-			 	$uix->register_pages( $pages );
+				$pages = $this->settings_page_array();
+				$uix = \lsx\ui\uix::get_instance( 'lsx' );
+				$uix->register_pages( $pages );
 			} else {
 				$uix = \lsx\ui\uix::get_instance( 'lsx' );
 			}
 
 			// include the meta boxes
-			if ( null !== $uix) {
+			if ( null !== $uix ) {
 				$metaboxes = include LSXLDPG_PATH . 'includes/metaboxes.php';
 				$uix->register_metaboxes( $metaboxes );
 			}
-
 			/*if ( function_exists( 'tour_operator' ) ) {
-			 	add_action( 'lsx_to_framework_display_tab_content', array( $this, 'display_settings' ), 11 );
-			 } else {
+				add_action( 'lsx_to_framework_display_tab_content', array( $this, 'display_settings' ), 11 );
+				} else {
 				add_action( 'lsx_framework_display_tab_content', array( $this, 'display_settings' ), 11 );
 			 }*/
 		}
@@ -159,11 +158,11 @@ class LSX_Landing_Pages_Admin {
 		if ( ! function_exists( 'tour_operator' ) ) {
 			if ( ! array_key_exists( 'display', $tabs ) ) {
 				$tabs['display'] = array(
-					'page_title'        => '',
-					'page_description'  => '',
-					'menu_title'        => esc_html__( 'Display', 'text_domain' ),
-					'template'          => LSXLDPG_PATH . 'includes/settings/display.php',
-					'default'           => $default,
+					'page_title'       => '',
+					'page_description' => '',
+					'menu_title'       => esc_html__( 'Display', 'text_domain' ),
+					'template'         => LSXLDPG_PATH . 'includes/settings/display.php',
+					'default'          => $default,
 				);
 
 				$default = false;
@@ -181,6 +180,7 @@ class LSX_Landing_Pages_Admin {
 	 */
 	public function display_settings( $tab = 'general' ) {
 		if ( 'landing-pages' === $tab ) {
+			echo ' ';
 			/*$this->disable_single_post_field();
 			$this->group_by_role_checkbox();
 			$this->placeholder_field();

@@ -18,7 +18,7 @@
 
 	<link rel="stylesheet" href="<?php echo LSXLDPG_URL; ?>framework/css/bootstrap.min.css">
 	<?php
-	lsx_landing_page_render_page_styles( $post->ID );	
+	lsx_landing_page_render_page_styles( $post->ID );
 	?>
 	<link rel="stylesheet" href="<?php echo LSXLDPG_URL; ?>framework/css/bootstrap-theme.min.css">
 	<script src="<?php echo LSXLDPG_URL; ?>framework/js/vendor/modernizr-2.8.3.min.js"></script>
