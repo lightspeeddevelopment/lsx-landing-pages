@@ -1,4 +1,7 @@
 ## Change log
 
+### 1.0.1
+* Updating and modernizing plugin
+
 ### 1.0.0
 * First Version

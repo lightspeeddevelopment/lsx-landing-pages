@@ -10,7 +10,7 @@
  * Plugin Name: LSX Landing Pages
  * Plugin URI:  http://cramer.co.za
  * Description: Landing Page Builder for LSX
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      David Cramer
  * Author URI:  http://cramer.co.za
  * Text Domain: lsx
