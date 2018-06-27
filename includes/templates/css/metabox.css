@@ -1,0 +1,68 @@
+.lsx-element-wrapper {
+  background: #fff none repeat scroll 0 0;
+  border: 1px solid #dfdfdf;
+  border-top: 0;
+  box-shadow: 40px 0 0 rgba(0, 0, 0, 0.04) inset;
+  padding: 12px 12px 12px 50px;
+  position: relative;
+}
+.grid-magic a.lsx-wrapper-remover,
+a.lsx-wrapper-remover,
+.lsx-wrapper-remover {
+  left: 0;
+  top: 3px;
+  margin: 0 8px;
+  padding: 1px;
+  position: absolute;
+  text-decoration: none;
+  color: #666;
+  cursor: pointer;
+}
+.grid-magic a.lsx-wrapper-remover:hover,
+a.lsx-wrapper-remover:hover,
+.lsx-wrapper-remover:hover{
+  text-decoration: none;
+}
+.lsx-element-wrapper-title {
+  background: #fff none repeat scroll 0 0;
+  border: 1px solid #e2e2e2;
+  padding: 12px;
+  font-size: 14px;
+}
+.lsx-add-box {
+  border: 2px dashed #cfcfcf;
+  border-radius: 4px;
+  color: #cfcfcf;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 20px 0 0;
+  padding: 5px;
+  text-align: center;
+}
+.lsx-add-box:hover {
+  border: 2px dashed #afafaf;
+  color: #afafaf;
+  background: rgba(0,0,0,0.03);
+}
+.lsx-element-wrapper .element-space {
+  border: 1px solid #cfcfcf;
+  border-radius: 3px;
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 11px;
+  padding: 12px;
+}
+.lsx-content-module img{
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.lsx-content-module {
+  white-space: pre-line;
+}
+
+.lsx-header-group {
+  background: #cfcfcf none repeat scroll 0 0;
+  border-radius: 2px 2px 0 0;
+  display: inline-block;
+  padding: 10px;
+}

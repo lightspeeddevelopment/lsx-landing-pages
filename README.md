@@ -1,2 +1,2 @@
-# lsx-landing-pages
-LSX Landing Pages plugin
+# LSX Landing Pages
+LSX Landing Pages for LSX Theme.

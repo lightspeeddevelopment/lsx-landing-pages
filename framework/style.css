@@ -1,0 +1,46 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+
+
+.landing-page-header,
+.landing-page-body,
+.landing-page-footer {
+	margin: 0;
+	padding-bottom: 0;
+	position: relative;
+	padding: 20px 0;
+}
+.image-backdrop {
+	background-position: center center;
+	background-size: cover;		
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.image-element-wrapper{
+	text-align: center;
+	margin-bottom: 12px;
+}
+.lsx-landing-pages-row img{
+  max-width: 100%;
+  height: auto;
+}
+.landing-page-area,
+.lsx-landing-pages-row,
+.lsx-landing-pages-column{
+	background-position: center center;
+	background-size: cover;
+}
+
+
+
+
+
+
