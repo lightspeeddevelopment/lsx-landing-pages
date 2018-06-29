@@ -15,7 +15,7 @@ get_header();
 			//for now I'm doing htis way
 
 				$items = array();
-				foreach( $struct as $node_id => $node ) {
+				foreach ( $struct as $node_id => $node ) {
 					if ( empty( $node['column'] ) ) {
 						continue;
 					}
@@ -37,8 +37,8 @@ get_header();
 						<ul class="nav nav-tabs">
 						<?php foreach ( $tabs as $tab_id => $tab ) {
 							$class = '';
-							if( empty( $has_active ) ){
-								$class = "active";
+							if ( empty( $has_active ) ) {
+								$class      = 'active';
 								$has_active = true;
 							}
 							?>
@@ -63,8 +63,8 @@ get_header();
 							}
 							echo '<div role="tabpanel" class="tab-pane ' . esc_attr( $class ) . '" id="' . esc_attr( $row_id ) . '">';
 						}
-
-							echo render_lsx_landing_pages_grid( $row );
+							$render_row = render_lsx_landing_pages_grid( $row );
+							echo wp_kses_post( $render_row );
 
 						if ( ! empty( $tabs ) && count( $tabs ) > 1 && ! empty( $row['config']['name'] ) ) {
 							echo '</div>';

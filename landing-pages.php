@@ -3,7 +3,7 @@
  * @package   lsx
  * @author    David Cramer
  * @license   GPL-2.0+
- * @link      
+ * @link
  * @copyright 2016 David Cramer
  *
  * @wordpress-plugin
@@ -25,13 +25,13 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 
-define('LSXLDPG_PATH',  plugin_dir_path( __FILE__ ) );
-define('LSXLDPG_CORE',  __FILE__ );
-define('LSXLDPG_URL',  plugin_dir_url( __FILE__ ) );
-define('LSXLDPG_VER',  '1.0.0' );
+define( 'LSXLDPG_PATH', plugin_dir_path( __FILE__ ) );
+define( 'LSXLDPG_CORE', __FILE__ );
+define( 'LSXLDPG_URL', plugin_dir_url( __FILE__ ) );
+define( 'LSXLDPG_VER', '1.0.0' );
 
 // Load instance
-add_action( 'plugins_loaded', function(){
+add_action( 'plugins_loaded', function() {
 
 	// Post Type and Custom Fields
 	require_once( LSXLDPG_PATH . '/classes/class-lsx-landing-pages-admin.php' );
@@ -58,7 +58,6 @@ add_action( 'plugins_loaded', function(){
 	//$uix = \lsx\ui\uix::get_instance( 'lsx' );
 	//$uix->register_pages( $pages );
 	//$uix->register_metaboxes( $metaboxes );
-
 
 	// init widgets
 	include_once LSXLDPG_PATH . 'includes/widgets.php';

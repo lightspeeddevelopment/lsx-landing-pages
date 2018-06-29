@@ -1,11 +1,11 @@
 <?php
 /**
- * Example page template 
+ * Example page template
  *
  * @package   templates
  * @author    David Cramer
  * @license   GPL-2.0+
- * @link      
+ * @link
  * @copyright 2016 David Cramer
  */
 ?>

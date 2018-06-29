@@ -12,7 +12,7 @@
 	data-height="780"
 	data-width="700"
 
-	
+
 	data-modal="{{_node_point}}.column"
 	data-template="row"
 	data-focus="true"
@@ -20,5 +20,5 @@
 	data-footer="conduitModalFooter"
 	data-default='{"struct": { "set" : "set_0" } }'
 
-	><span class="dashicons dashicons-plus"></span><?php _e( 'Add Row', 'lsx-landing-pages' ); ?></div>
+	><span class="dashicons dashicons-plus"></span><?php esc_html_e( 'Add Row', 'lsx-landing-pages' ); ?></div>
 </div>

@@ -110,7 +110,7 @@ function lsx_landing_page_do_pricing_table( $item ) {
 
 
 add_action( 'lsx_landing_page_element_comparison_table', 'lsx_landing_page_do_comparison_table' );
-function lsx_landing_page_do_comparison_table( $item ){
+function lsx_landing_page_do_comparison_table( $item ) {
 	add_filter( 'wqc_shortcode_classes', 'lsx_landing_pages_set_qc_class' );
 	?>
 
@@ -132,7 +132,10 @@ function lsx_landing_page_do_comparison_table( $item ){
 									<div class="option-label"><?php echo esc_attr( $option['label'] ); ?></div>
 									<div class="option-price"><?php echo esc_attr( $option['price'] ); ?></div>
 								</th>
-								<?php } } ?>
+								<?php
+									}
+								}
+							?>
 							</tr>
 						</thead>
 						<tbody>
@@ -141,20 +144,26 @@ function lsx_landing_page_do_comparison_table( $item ){
 							foreach ( $item['config']['feature'] as $feature ) { ?>
 							<tr class="price_table_row feature-id">
 								<td class="db-width-perticular">
-									<?php echo $feature['label']; ?>
+									<?php echo esc_attr( $feature['label'] ); ?>
 								</td>
 								<?php
 								if ( ! empty( $item['config']['options'] ) ) {
 									foreach ( $item['config']['options'] as $option ) { ?>
 								<td class="option-id" style="text-align: center;">
-									<?php 
+									<?php
 									if ( ! empty( $option['feature'][ $feature['_id'] ] ) ) {
 										echo do_shortcode( $option['feature'][ $feature['_id'] ] );
 									} ?>
 								</td>
-								<?php } } ?>
+								<?php
+									}
+								}
+								?>
 							</tr>
-						<?php } } ?>
+						<?php
+							}
+						}
+						?>
 						</tbody>
 						<tfoot>
 							<tr class="price_table_row">
@@ -163,12 +172,15 @@ function lsx_landing_page_do_comparison_table( $item ){
 								if ( ! empty( $item['config']['options'] ) ) {
 									foreach ( $item['config']['options'] as $option ) { ?>
 								<th class="db-bk-color-one option-id">
-									<?php 
+									<?php
 									if ( ! empty( $option['product'] ) ) {
 										echo do_shortcode( '[reveal_quick_checkout clear_cart="true" id="' . $option['product'] . '" quantity="1" checkout_text="Choose Package"]' );
 									} ?>
 								</th>
-								<?php } } ?>
+								<?php
+									}
+								}
+							?>
 							</tr>
 						</tfoot>
 					</table>
@@ -184,7 +196,7 @@ remove_filter( 'wqc_shortcode_classes', 'lsx_landing_pages_set_qc_class' );
 
 
 function lsx_landing_pages_set_qc_class( $class ) {
-	return 'btn ' . $class; 
+	return 'btn ' . $class;
 }
 
 // unregister
@@ -321,7 +333,8 @@ function lsx_landing_page_render_shortcode( $atts ) {
 							}
 							echo '<div role="tabpanel" class="tab-pane ' . esc_attr( $class ) . '" id="' . esc_attr( $row_id ) . '">';
 						}
-							echo render_lsx_landing_pages_grid( $row, 'sm' );
+							$render_row = render_lsx_landing_pages_grid( $row, 'sm' );
+							echo wp_kses_post( $render_row );
 						if ( ! empty( $tabs ) && count( $tabs ) > 1 && ! empty( $row['config']['name'] ) ) {
 							echo '</div>';
 						}

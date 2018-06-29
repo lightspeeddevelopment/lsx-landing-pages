@@ -6,7 +6,7 @@
  *
  * @since 1.0.0
  */
-if( !class_exists( 'WP_Customize_Control' ) ){
+if ( ! class_exists( 'WP_Customize_Control' ) ) {
 	return;
 }
 class LSX_Landing_Pages_Seperator_Control extends WP_Customize_Control {
@@ -40,7 +40,7 @@ class LSX_Landing_Pages_Seperator_Control extends WP_Customize_Control {
 	 */
 	public function __construct( $manager, $id, $args = array() ) {
 		parent::__construct( $manager, $id, $args );
-		if( !empty( $args['choices'] ) ){
+		if ( ! empty( $args['choices'] ) ) {
 			$this->layouts = $args['choices'];
 		}
 	}
@@ -54,7 +54,7 @@ class LSX_Landing_Pages_Seperator_Control extends WP_Customize_Control {
 		$class = 'accordion-section accordion-section-' . $this->type;
 
 		?>
-		<h2 class="<?php echo $class; ?>">
+		<h2 class="<?php echo esc_attr( $class ); ?>">
 			<?php if ( ! empty( $this->label ) ) { ?>
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
 			<?php } ?>

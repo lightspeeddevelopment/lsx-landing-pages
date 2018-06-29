@@ -16,11 +16,11 @@
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="<?php echo LSXLDPG_URL; ?>framework/css/bootstrap.min.css">
+	<link rel="stylesheet" href="<?php echo esc_attr( LSXLDPG_URL ); ?>framework/css/bootstrap.min.css">
 	<?php
 	lsx_landing_page_render_page_styles( $post->ID );
 	?>
-	<link rel="stylesheet" href="<?php echo LSXLDPG_URL; ?>framework/css/bootstrap-theme.min.css">
-	<script src="<?php echo LSXLDPG_URL; ?>framework/js/vendor/modernizr-2.8.3.min.js"></script>
+	<link rel="stylesheet" href="<?php echo esc_attr( LSXLDPG_URL ); ?>framework/css/bootstrap-theme.min.css">
+	<script src="<?php echo esc_attr( LSXLDPG_URL ); ?>framework/js/vendor/modernizr-2.8.3.min.js"></script>
 	<?php wp_head(); ?>
 </head>
