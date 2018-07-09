@@ -12,13 +12,12 @@ get_header();
 			<?php
 			// put in AB loader testing thing
 			// render_test_element( $structure['header'] );
-			//for now I'm doing htis way
-
+			// for now I'm doing this way.
 				$items = array();
-				foreach ( $struct as $node_id => $node ) {
-					if ( empty( $node['column'] ) ) {
+			foreach ( $struct as $node_id => $node ) {
+				if ( empty( $node['column'] ) ) {
 						continue;
-					}
+				}
 
 					?>
 					<div class="landing-page-area landing-page-<?php echo esc_attr( $location ); ?>" id="landing-page-<?php echo esc_attr( $location ) . '-' . esc_attr( $node_id ); ?>">	
@@ -28,14 +27,15 @@ get_header();
 					$tabs = array();
 					foreach ( $node['column'] as $row_id => $row ) {
 						if ( ! empty( $row['config']['name'] ) ) {
-							$tabs[$row_id] = $row['config']['name'];
+							$tabs[$row_id] = $row ['config']['name'];
 						}
 					}
 					if ( ! empty( $tabs ) && count( $tabs ) > 1 ) {
 						$has_active = false;
 						?>
 						<ul class="nav nav-tabs">
-						<?php foreach ( $tabs as $tab_id => $tab ) {
+						<?php
+						foreach ( $tabs as $tab_id => $tab ) {
 							$class = '';
 							if ( empty( $has_active ) ) {
 								$class      = 'active';
@@ -54,7 +54,7 @@ get_header();
 					$has_active_panel = false;
 					foreach ( $node['column'] as $row_id => $row ) {
 
-						// check tabs
+						// check tabs.
 						if ( ! empty( $tabs ) && count( $tabs ) > 1 && ! empty( $row['config']['name'] ) ) {
 							$class = '';
 							if ( empty( $has_active_panel ) ) {
@@ -80,14 +80,11 @@ get_header();
 				</div>
 			<?php
 			}
-				// random selector
-				//$select = rand( 0, count( $items ) - 1);
-				//foreach( $struct[ $items[ $select ] ]['column'] as $row ){
-				//	echo render_lsx_landing_pages_grid( $row, 'row' );
-				//}
-
-
-
+			// random selector
+			// $select = rand( 0, count( $items ) - 1);.
+			// foreach( $struct[ $items[ $select ] ]['column'] as $row ){
+			// echo render_lsx_landing_pages_grid( $row, 'row' );
+			// }.
 			?>
 		<?php } ?>
 	<?php } ?>

@@ -8,7 +8,8 @@
  * @link
  * @copyright 2015 David Cramer & CalderaWP LLC
  */
-// Register Custom Post Type
+
+/** Register Custom Post Type */
 function lsx_landing_page_post_type() {
 
 	$labels = array(
@@ -48,7 +49,7 @@ function lsx_landing_page_post_type() {
 		'label'                 => __( 'Landing Page', 'text_domain' ),
 		'description'           => __( 'Landing Page Definition', 'text_domain' ),
 		'labels'                => $labels,
-		'supports'              => array( 'title', ),
+		'supports'              => array( 'title' ),
 		'hierarchical'          => false,
 		'public'                => true,
 		'show_ui'               => true,
@@ -70,29 +71,28 @@ function lsx_landing_page_post_type() {
 add_action( 'init', 'lsx_landing_page_post_type', 0 );
 
 
-function lsx_landing_pages_actions($actions, $post){
-    //check for your post type
-    if ($post->post_type =="lsx_landing_page"){
-    	
-    	$url = get_permalink( $post->ID );
-    	$link = admin_url( 'customize.php?url=' . urlencode( $url ) );
-    	$actions['customize'] =	'<a href="' . $link . '" title="' . esc_attr__( 'Customize', 'lsx-landing-pages' ) . '">' . esc_html__( 'Customize', 'lsx-landing-pages' ) . '</a>';
-    }
-    return $actions;
+function lsx_landing_pages_actions ( $actions, $post ) {
+	// check for your post type.
+    if ( $post->post_type == 'lsx_landing_page' ) {
+		$url = get_permalink( $post->ID );
+		$link = admin_url( 'customize.php?url=' . urlencode( $url ) );
+		$actions['customize'] =	'<a href="' . $link . '" title="' . esc_attr__( 'Customize', 'lsx-landing-pages' ) . '">' . esc_html__( 'Customize', 'lsx-landing-pages' ) . '</a>';
+	}
+	return $actions;
 }
-add_filter('post_row_actions','lsx_landing_pages_actions', 10, 2);
+add_filter( 'post_row_actions', 'lsx_landing_pages_actions', 10, 2 );
 
-//add_filter( 'stylesheet_directory_uri', 'lsx_check_landing_page_bind', 9);
+// add_filter( 'stylesheet_directory_uri', 'lsx_check_landing_page_bind', 9).
 add_filter( 'stylesheet_directory', 'lsx_landing_page_style_check', 9 );
-function lsx_check_landing_page_bind( $uri ){
+function lsx_check_landing_page_bind( $uri ) {
 
 	$url = $_SERVER['REQUEST_URI'];
-	if( lsx_check_landing_page() ){
+	if ( lsx_check_landing_page() ) {
 		return LSXLDPG_URL . 'framework';
 	}
-	return $uri;	
+	return $uri;
 }
-function lsx_landing_page_style_check( $dir ){
+function lsx_landing_page_style_check( $dir ) {
 	$url = $_SERVER['REQUEST_URI'];
 	if( lsx_check_landing_page() ){
 		add_filter( 'customize_loaded_components', 'lsx_setup_components', 100 );
@@ -101,16 +101,16 @@ function lsx_landing_page_style_check( $dir ){
 	return $dir;
 }
 
-function lsx_check_landing_page(){
+function lsx_check_landing_page() {
 	$url = $_SERVER['REQUEST_URI'];
-	if( basename( $_SERVER['SCRIPT_FILENAME'] ) === 'customize.php' ){		
+	if ( basename( $_SERVER['SCRIPT_FILENAME'] ) === 'customize.php' ) {
 		parse_str( $_SERVER['QUERY_STRING'], $query );
-		if( !empty( $query['url'] ) ){
+		if ( ! empty( $query['url'] ) ) {
 			$url = $query['url'];
 		}
-		// if saving
+		// if saving.
 	}
-	if( !empty( $_POST['action'] ) && $_POST['action'] == 'customize_save' ){
+	if ( !empty( $_POST['action'] ) && $_POST['action'] == 'customize_save' ){
 		$url = wp_get_referer();
 		$parsed = parse_url( $url );
 		if( 'customize.php' == basename( $parsed['path'] ) && !empty( $parsed['query'] ) ){
@@ -120,165 +120,163 @@ function lsx_check_landing_page(){
 				$url = $ref['url'];
 			}
 		}
-	}	
-	if( false !== strpos( $url, '/go/' ) ){
+	}
+	if ( false !== strpos( $url, '/go/' ) ) {
 		$landing_page = url_to_postid( $url );
-		if( !empty( $landing_page ) ){
+		if ( ! empty( $landing_page ) ) {
 			return $landing_page;
 		}
 		return true;
-	}	
+	}
 	return false;
 }
 
 function lsx_landing_pages_customize_register( $wp_customize ) {
 	$landing_id = lsx_check_landing_page();
-	if( false === $landing_id ){
+	if ( false === $landing_id ) {
 		return;
 	}
-	
 	$structure = get_post_meta( $landing_id, '_lsx_layout', true );
 
 	$remove = array(
-		"display_header_text",
-		"title_tagline",
-		"colors",
-		"header_image",
-		"background_image",
-		"static_front_page",
-		"themes"
+		'display_header_text',
+		'title_tagline',
+		'colors',
+		'header_image',
+		'background_image',
+		'static_front_page',
+		'themes',
 	);
 
 	$sections = $wp_customize->sections();
-	foreach( $sections as $section_id => $section ){
-		if( false !== strpos( $section_id, 'sidebar-widgets-nd') ){
+	foreach ( $sections as $section_id => $section ) {
+		if ( false !== strpos( $section_id, 'sidebar-widgets-nd' ) ) {
 			continue;
 		}
 		$wp_customize->remove_section( $section_id );
 	}
 
-	foreach( $remove as $section ){
+	foreach ( $remove as $section ) {
 		$wp_customize->remove_section( $section );
 	}
 
 
-	foreach( $structure as $location=>$struct ){
-		// Group Area
-		if( !empty( $struct ) ){
+	foreach ( $structure as $location => $struct ) {
+		// Group Area.
+		if ( ! empty( $struct ) ) {
 
 			$index = 1;
-			foreach( $struct as $node_id=>$area ){
-				// rows / section
+			foreach ( $struct as $node_id => $area ) {
+				// rows / section.
 				$wp_customize->add_panel(
 					'lsx_landing_pages_' . $location . '_' . $node_id,
 					array(
-						'title'     => ucwords( $location ) . ' ' . $index++,
-						'priority'  => 20
+						'title'     => ucwords( $location ) . ' ' . ( $index ++ ),
+						'priority'  => 20,
 					)
 				);
-				
-				// Main area
+				// Main area.
 				$wp_customize->add_section(
 					'lsx_landing_pages_' . $location . '_' . $node_id . '_main',
 					array(
-						'panel'		=> 'lsx_landing_pages_' . $location . '_' . $node_id,
+						'panel'     => 'lsx_landing_pages_' . $location . '_' . $node_id,
 						'title'     => 'Area Settings',
-						'priority'  => 20
+						'priority'  => 20,
 					)
 				);
-				// setting
+				// setting.
 				$wp_customize->add_setting(
 					'margin_' . $landing_id . '_' . $node_id,
-					array(						
-						'transport'  =>  'postMessage',
-						'type'		 =>  'option',
-						'capability' =>  'edit_theme_options'
+					array(
+						'transport'  => 'postMessage',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
 					)
 				);
 				$wp_customize->add_setting(
 					'padding_' . $landing_id . '_' . $node_id,
-					array(						
-						'transport'  =>  'postMessage',
-						'type'		 =>  'option',
-						'capability' =>  'edit_theme_options'
+					array(
+						'transport'  => 'postMessage',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
 					)
 				);
 				$wp_customize->add_setting(
 					'background_color_' . $landing_id . '_' . $node_id,
-					array(						
-						'transport'  =>  'postMessage',
-						'type'		 =>  'option',
-						'capability' =>  'edit_theme_options'
+					array(
+						'transport'  => 'postMessage',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
 					)
 				);
 
 				$wp_customize->add_setting(
 					'text_color_' . $landing_id . '_' . $node_id,
-					array(						
-						'transport'  =>  'postMessage',
-						'type'		 =>  'option',
-						'capability' =>  'edit_theme_options'
+					array(
+						'transport'  => 'postMessage',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
 					)
 				);
 				$wp_customize->add_setting(
 					'background_image_' . $landing_id . '_' . $node_id,
 					array(
-						'transport'  =>  'postMessage',
-						'type'		 =>  'option',
-						'capability' =>  'edit_theme_options'
+						'transport'  => 'postMessage',
+						'type'       => 'option',
+						'capability' => 'edit_theme_options',
 					)
 				);
 
-				// controll
-				$wp_customize->add_control( 
-					new WP_Customize_Control( 
-						$wp_customize, 
+				// control.
+				$wp_customize->add_control(
+					new WP_Customize_Control(
+						$wp_customize,
 						'margin_' . $landing_id . '_' . $node_id,
 						array(
-							'label'      	=> __( 'Margin', 'lsx-landing-pages' ),
+							'label'      => __( 'Margin', 'lsx-landing-pages' ),
 							'description'   => __( 'i.e "5px" or "5px 8px" etc.', 'lsx-landing-pages' ),
-							'default'	 => '0',
-							'type'		 => 'text',
+							'default'    => '0',
+							'type'       => 'text',
 							'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_main',
 							'settings'   => 'margin_' . $landing_id . '_' . $node_id,
 						)
-					) 
+					)
 				);
-				$wp_customize->add_control( 
-					new WP_Customize_Control( 
-						$wp_customize, 
+				$wp_customize->add_control(
+					new WP_Customize_Control(
+						$wp_customize,
 						'padding_' . $landing_id . '_' . $node_id,
 						array(
-							'label'      	=> __( 'Padding', 'lsx-landing-pages' ),
+							'label'      => __( 'Padding', 'lsx-landing-pages' ),
 							'description'   => __( 'i.e "5px" or "5px 8px" etc.', 'lsx-landing-pages' ),
-							'default'	 => '0',
-							'type'		 => 'text',
+							'default'    => '0',
+							'type'       => 'text',
 							'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_main',
 							'settings'   => 'padding_' . $landing_id . '_' . $node_id,
 						)
-					) 
+					)
 				);
-				$wp_customize->add_control( 
-					new WP_Customize_Color_Control( 
-						$wp_customize, 
+				$wp_customize->add_control(
+					new WP_Customize_Color_Control(
+						$wp_customize,
 						'background_color_' . $landing_id . '_' . $node_id,
 						array(
 							'label'      => __( 'Background Color', 'lsx-landing-pages' ),
 							'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_main',
 							'settings'   => 'background_color_' . $landing_id . '_' . $node_id,
 						)
-					) 
+					)
 				);
-				$wp_customize->add_control( 
-					new WP_Customize_Color_Control( 
-						$wp_customize, 
+				$wp_customize->add_control(
+					new WP_Customize_Color_Control(
+						$wp_customize,
 						'text_color_' . $landing_id . '_' . $node_id,
 						array(
 							'label'      => __( 'Text Color', 'lsx-landing-pages' ),
 							'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_main',
 							'settings'   => 'text_color_' . $landing_id . '_' . $node_id,
 						)
-					) 
+					)
 				);
 				$wp_customize->add_control(
 					new WP_Customize_Image_Control(
@@ -290,137 +288,136 @@ function lsx_landing_pages_customize_register( $wp_customize ) {
 							'settings'   => 'background_image_' . $landing_id . '_' . $node_id,
 						)
 					)
-				);	
+				);
 				$row_num = 1;
-				foreach( $area['column'] as $row_id => $row ){
+				foreach ( $area['column'] as $row_id => $row ) {
 
 					// inner row
-					// rows / section
-					$title = ( !empty( $row['config']['name'] ) ? $row['config']['name'] : 'Row: '. $row_num );
+					// rows / section.
+					$title = ( ! empty( $row['config']['name'] ) ? $row['config']['name'] : 'Row: ' . $row_num );
 					$wp_customize->add_section(
 						'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 						array(
-							'panel'		=> 'lsx_landing_pages_' . $location . '_' . $node_id,
+							'panel'     => 'lsx_landing_pages_' . $location . '_' . $node_id,
 							'title'     => $title,
-							'priority'  => 20
+							'priority'  => 20,
 						)
 					);
-					// inc
+					// inc.
 					$row_num++;
 
 					$wp_customize->add_setting(
 						'background_color_' . $landing_id . '_' . $node_id . '_' . $row_id,
-						array(							
-							'transport'  =>  'postMessage',
-							'type'		 =>  'option',
-							'capability' =>  'edit_theme_options'
+						array(
+							'transport'  => 'postMessage',
+							'type'       => 'option',
+							'capability' => 'edit_theme_options',
 						)
 					);
 					$wp_customize->add_setting(
 						'text_color_' . $landing_id . '_' . $node_id . '_' . $row_id,
-						array(							
-							'transport'  =>  'postMessage',
-							'type'		 =>  'option',
-							'capability' =>  'edit_theme_options'
+						array(
+							'transport'  => 'postMessage',
+							'type'       => 'option',
+							'capability' => 'edit_theme_options',
 						)
 					);
-					
 					$wp_customize->add_setting(
 						'padding_' . $landing_id . '_' . $node_id . '_' . $row_id,
-						array(							
-							'transport'  =>  'postMessage',
-							'type'		 =>  'option',
-							'capability' =>  'edit_theme_options'
+						array(
+							'transport'  => 'postMessage',
+							'type'       => 'option',
+							'capability' => 'edit_theme_options',
 						)
 					);
 					$wp_customize->add_setting(
 						'margin_' . $landing_id . '_' . $node_id . '_' . $row_id,
-						array(							
-							'transport'  =>  'postMessage',
-							'type'		 =>  'option',
-							'capability' =>  'edit_theme_options'
+						array(
+							'transport'  => 'postMessage',
+							'type'       => 'option',
+							'capability' => 'edit_theme_options',
 						)
 					);
 
 					$wp_customize->add_setting(
 						'background_image_' . $landing_id . '_' . $node_id . '_' . $row_id,
 						array(
-							'transport'  =>  'postMessage',
-							'type'		 =>  'option',
-							'capability' =>  'edit_theme_options'
+							'transport'  => 'postMessage',
+							'type'       => 'option',
+							'capability' => 'edit_theme_options',
 						)
 					);
 					$wp_customize->add_setting(
 						'separator_' . $landing_id . '_' . $node_id . '_' . $row_id,
 						array(
-							'capability' =>  'edit_theme_options'
+							'capability' => 'edit_theme_options',
 						)
 					);
 
 
 
-					// controll
-					$wp_customize->add_control( 
-						new LSX_Landing_Pages_Seperator_Control( 
-							$wp_customize, 
+					// control.
+					$wp_customize->add_control(
+						new LSX_Landing_Pages_Seperator_Control(
+							$wp_customize,
 							'separator_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							array(
 								'label'      => __( 'Row Settings', 'lsx-landing-pages' ),
 								'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 							)
-						) 
+						)
 					);
 
-					$wp_customize->add_control( 
-						new WP_Customize_Control( 
-							$wp_customize, 
+					$wp_customize->add_control(
+						new WP_Customize_Control(
+							$wp_customize,
 							'padding_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							array(
-								'label'      	=> __( 'Padding', 'lsx-landing-pages' ),
+								'label'      => __( 'Padding', 'lsx-landing-pages' ),
 								'description'   => __( 'i.e "5px" or "5px 8px" etc.', 'lsx-landing-pages' ),
-								'default'	 => '0',
-								'type'		 => 'text',
+								'default'    => '0',
+								'type'       => 'text',
 								'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 								'settings'   => 'padding_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							)
-						) 
+						)
 					);
-					$wp_customize->add_control( 
-						new WP_Customize_Control( 
-							$wp_customize, 
+					$wp_customize->add_control(
+						new WP_Customize_Control(
+							$wp_customize,
 							'margin_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							array(
-								'label'      	=> __( 'Margin', 'lsx-landing-pages' ),
+								'label'      => __( 'Margin', 'lsx-landing-pages' ),
 								'description'   => __( 'i.e "5px" or "5px 8px" etc.', 'lsx-landing-pages' ),
-								'default'	 => '0 15px',
+								'default'    => '0 15px',
 								'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
-								'type'		 => 'text',
+								'type'       => 'text',
 								'settings'   => 'margin_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							)
-						) 
+						)
 					);
 
-					$wp_customize->add_control( 
-						new WP_Customize_Color_Control( 
-							$wp_customize, 
+					$wp_customize->add_control(
+						new WP_Customize_Color_Control(
+							$wp_customize,
 							'background_color_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							array(
 								'label'      => __( 'Background Color', 'lsx-landing-pages' ),
 								'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 								'settings'   => 'background_color_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							)
-						) 
+						)
 					);
-					$wp_customize->add_control( 
-						new WP_Customize_Color_Control( 
-							$wp_customize, 
+					$wp_customize->add_control(
+						new WP_Customize_Color_Control(
+							$wp_customize,
 							'text_color_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							array(
 								'label'      => __( 'Text Color', 'lsx-landing-pages' ),
 								'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 								'settings'   => 'text_color_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							)
-						) 
+						)
 					);
 					$wp_customize->add_control(
 						new WP_Customize_Image_Control(
@@ -432,126 +429,126 @@ function lsx_landing_pages_customize_register( $wp_customize ) {
 								'settings'   => 'background_image_' . $landing_id . '_' . $node_id . '_' . $row_id,
 							)
 						)
-					);	
+					);
 
 
 
-					// columns
+					// columns.
 					$column_no = 1;
-					foreach( $row['struct']['column'] as $column ){
+					foreach ( $row['struct']['column'] as $column ) {
 
 						$wp_customize->add_setting(
 							'separator_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 							array(
-								'capability' =>  'edit_theme_options'
+								'capability' => 'edit_theme_options',
 							)
 						);
 						$wp_customize->add_setting(
 							'background_color_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
-							array(								
-								'transport'  =>  'postMessage',
-								'type'		 =>  'option',
-								'capability' =>  'edit_theme_options'
+							array(
+								'transport'  => 'postMessage',
+								'type'       => 'option',
+								'capability' => 'edit_theme_options',
 							)
 						);
 						$wp_customize->add_setting(
 							'margin_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
-							array(								
-								'transport'  =>  'postMessage',
-								'type'		 =>  'option',
-								'capability' =>  'edit_theme_options'
+							array(
+								'transport'  => 'postMessage',
+								'type'       => 'option',
+								'capability' => 'edit_theme_options',
 							)
 						);
 						$wp_customize->add_setting(
 							'padding_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
-							array(								
-								'transport'  =>  'postMessage',
-								'type'		 =>  'option',
-								'capability' =>  'edit_theme_options'
+							array(
+								'transport'  => 'postMessage',
+								'type'       => 'option',
+								'capability' => 'edit_theme_options',
 							)
 						);
 						$wp_customize->add_setting(
 							'text_color_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
-							array(								
-								'transport'  =>  'postMessage',
-								'type'		 =>  'option',
-								'capability' =>  'edit_theme_options'
+							array(
+								'transport'  => 'postMessage',
+								'type'       => 'option',
+								'capability' => 'edit_theme_options',
 							)
 						);
 						$wp_customize->add_setting(
 							'background_image_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 							array(
-								'transport'  =>  'postMessage',
-								'type'		 =>  'option',
-								'capability' =>  'edit_theme_options'
+								'transport'  => 'postMessage',
+								'type'       => 'option',
+								'capability' => 'edit_theme_options',
 							)
 						);
 
 
-						// controll
-						$wp_customize->add_control( 
-							new LSX_Landing_Pages_Seperator_Control( 
-								$wp_customize, 
+						// control.
+						$wp_customize->add_control(
+							new LSX_Landing_Pages_Seperator_Control(
+								$wp_customize,
 								'separator_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								array(
-									'label'      => __('Column', 'lsx-landing-pages') .' '. $column_no++,
+									'label'      => __( 'Column', 'lsx-landing-pages' ) . ' ' . ( $column_no++ ),
 									'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 								)
-							) 
+							)
 						);
 
 
-						$wp_customize->add_control( 
-							new WP_Customize_Control( 
-								$wp_customize, 
+						$wp_customize->add_control(
+							new WP_Customize_Control(
+								$wp_customize,
 								'margin_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								array(
 									'label'      => __( 'Margin', 'lsx-landing-pages' ),
 									'description'   => __( 'i.e "5px" or "5px 8px" etc.', 'lsx-landing-pages' ),
-									'default'	 => '0',
-									'type'		 => 'text',
+									'default'    => '0',
+									'type'       => 'text',
 									'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 									'settings'   => 'margin_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								)
-							) 
+							)
 						);
 
-						$wp_customize->add_control( 
-							new WP_Customize_Control( 
-								$wp_customize, 
+						$wp_customize->add_control(
+							new WP_Customize_Control(
+								$wp_customize,
 								'padding_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								array(
 									'label'      => __( 'Padding', 'lsx-landing-pages' ),
 									'description'   => __( 'i.e "5px" or "5px 8px" etc.', 'lsx-landing-pages' ),
-									'default'	 => '0',
-									'type'		 => 'text',
+									'default'    => '0',
+									'type'       => 'text',
 									'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 									'settings'   => 'padding_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								)
-							) 
+							)
 						);
 
-						$wp_customize->add_control( 
-							new WP_Customize_Color_Control( 
-								$wp_customize, 
+						$wp_customize->add_control(
+							new WP_Customize_Color_Control(
+								$wp_customize,
 								'background_color_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								array(
 									'label'      => __( 'Background Color', 'lsx-landing-pages' ),
 									'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 									'settings'   => 'background_color_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								)
-							) 
+							)
 						);
-						$wp_customize->add_control( 
-							new WP_Customize_Color_Control( 
-								$wp_customize, 
+						$wp_customize->add_control(
+							new WP_Customize_Color_Control(
+								$wp_customize,
 								'text_color_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								array(
 									'label'      => __( 'Background Color', 'lsx-landing-pages' ),
 									'section'    => 'lsx_landing_pages_' . $location . '_' . $node_id . '_' . $row_id,
 									'settings'   => 'text_color_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								)
-							) 
+							)
 						);
 						$wp_customize->add_control(
 							new WP_Customize_Image_Control(
@@ -563,22 +560,11 @@ function lsx_landing_pages_customize_register( $wp_customize ) {
 									'settings'   => 'background_image_' . $landing_id . '_' . $node_id . '_' . $row_id . '_' . $column['id'],
 								)
 							)
-						);	
-
-
+						);
 					}
-
-
-
-
 				}
-		
-
-
 			}
 		}
-		
-
 	}
 
 	add_filter( 'pre_option_blogname', 'lsx_set_title', 10, 2 );
@@ -586,9 +572,9 @@ function lsx_landing_pages_customize_register( $wp_customize ) {
 }
 
 
-function lsx_set_title( $a ){
+function lsx_set_title( $a ) {
 	$landing_page = lsx_check_landing_page();
-	if( false === $landing_page ){
+	if ( false === $landing_page ) {
 		return $a;
 	}
 	$page = get_post( $landing_page );
@@ -602,7 +588,7 @@ function lsx_setup_components( $wp_customize ) {
 	return array( 'widgets' );
 }
 
-function lsx_landing_pages_print_script(){
+function lsx_landing_pages_print_script() {
 	$landing_page = lsx_check_landing_page();
 	$structure = get_post_meta( $landing_page, '_lsx_layout', true );
 
@@ -615,12 +601,11 @@ function lsx_landing_pages_print_script(){
 	<?php
 		$structure = get_post_meta( $landing_page, '_lsx_layout', true );
 
-		foreach( $structure as $location=>$struct ){
-			// Group Area
-			if( !empty( $struct ) ){
-
+	foreach ( $structure as $location => $struct ) {
+			// Group Area.
+		if ( ! empty( $struct ) ) {
 				$index = 1;
-				foreach( $struct as $node_id=>$area ){
+			foreach ( $struct as $node_id => $area ) {
 					?>
 					wp.customize( 'margin_<?php echo $landing_page; ?>_<?php echo $node_id; ?>', function( value ) {
 						value.bind( function( to ) {
@@ -648,7 +633,7 @@ function lsx_landing_pages_print_script(){
 						} );
 					});
 					<?php
-					foreach( $area['column'] as $row_id => $row ){
+					foreach ( $area['column'] as $row_id => $row ) {
 
 							?>							
 							wp.customize( 'padding_<?php echo $landing_page; ?>_<?php echo $node_id; ?>_<?php echo $row_id; ?>', function( value ) {								
@@ -678,7 +663,7 @@ function lsx_landing_pages_print_script(){
 							});
 							<?php
 
-						foreach( $row['struct']['column'] as $column_id=>$column ){
+							foreach ( $row['struct']['column'] as $column_id => $column ) {
 							?>							
 							wp.customize( 'background_color_<?php echo $landing_page; ?>_<?php echo $node_id; ?>_<?php echo $row_id; ?>_<?php echo $column_id; ?>', function( value ) {								
 								value.bind( function( to ) {
@@ -706,17 +691,13 @@ function lsx_landing_pages_print_script(){
 								} );
 							});
 							<?php
-						}
+							}
 					}
-
-				}
-
 			}
-
 		}
+	}
 
-
-	?>	
+	?>
 
 })( jQuery );
 
@@ -727,27 +708,27 @@ function lsx_landing_pages_print_script(){
 
 function lsx_landing_pages_live_preview() {
 	$landing_page = lsx_check_landing_page();
-	if( false === $landing_page ){
+	if ( false === $landing_page ) {
 		return;
 	}
-	add_action('print_footer_scripts', 'lsx_landing_pages_print_script');
+	add_action( 'print_footer_scripts', 'lsx_landing_pages_print_script' );
 }
 add_action( 'customize_preview_init', 'lsx_landing_pages_live_preview' );
 
 
-// load the template 
-add_filter( 'template_include', 'lsx_landing_page_load_template' );		
+// load the template.
+add_filter( 'template_include', 'lsx_landing_page_load_template' );
 /**
-* Checks for a landing page request and loads accrodingly
-*
-* @since 1.0.0
-*
-* @return    template url
+ * Checks for a landing page request and loads accrodingly
+ *
+ * @since 1.0.0
+ *
+ * @return template url
 */
 function lsx_landing_page_load_template( $template ) {
 	global $wp_query;
-	if( lsx_check_landing_page() ){
-		return LSXLDPG_PATH . 'framework/index.php';	
+	if ( lsx_check_landing_page() ) {
+		return LSXLDPG_PATH . 'framework/index.php';
 	}
 	return $template;
 }
@@ -758,38 +739,31 @@ function lsx_landing_page_load_template( $template ) {
  * @since 1.0.0
  *
  */
-function render_lsx_landing_pages_grid( $grid, $extend = '' ){
-	
+function render_lsx_landing_pages_grid( $grid, $extend = '' ) {
 	$global_break = 'md';
-	
 	$out = '<div class="lsx-landing-pages-grid">';
 		$out .= '<div class="lsx-landing-pages-row row" id="landing-page-row-' . $grid['_id'] . '">';
-			foreach( $grid['struct']['column'] as $column_id=>$column ){
-				
+	foreach ( $grid['struct']['column'] as $column_id => $column ) {
 				$break_point = $global_break;
-				if( !empty( $column['break_point'] ) ){
+		if ( ! empty( $column['break_point'] ) ) {
 					$break_point = $column['break_point'];
-				}
+		}
 
 				$out .= '<div class="lsx-landing-pages-column col-' . $break_point . '-' . $column['width'] . ' column-' . $column_id . '" id="landing-page-' . $grid['_id'] . '-column-' . $column_id . '">';
-					if( !empty( $grid['element'] ) ){
-						foreach( $grid['element'] as $item_inx=>$item ){
+		if ( ! empty( $grid['element'] ) ) {
+			foreach ( $grid['element'] as $item_inx => $item ) {
 
-							if( $item['column'] !== $column['id'] ){
+				if ( $item['column'] !== $column['id'] ) {
 								continue;
-							}
+				}
 							ob_start();
 							do_action( 'lsx_landing_page_element_' . $item['element'], $item );
 							$out .= ob_get_clean();
-								
-						}
-					}
-
-				$out .= '</div>';
 			}
-	
+		}
+				$out .= '</div>';
+	}
 		$out .= '</div>';
-	
 	$out .= '</div>';
 
 	return $out;
